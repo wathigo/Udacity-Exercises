@@ -15,10 +15,12 @@ CREATE TABLE  table1(
 
 cursor.execute('INSERT INTO table1 (id, completed) VALUES (%s, %s);', (1, True))
 
-cursor.execute('INSERT INTO table1 (id, completed) VALUES (%(id)s, %(completed)s);', {
+query = 'INSERT INTO table1 (id, completed) VALUES (%(id)s, %(completed)s);'
+data = {
     'id': 2,
     'completed': False
-})
+}
+cursor.execute(query, data)
 
 connection.commit()
 cursor.close()
