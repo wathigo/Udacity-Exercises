@@ -4,6 +4,8 @@ connection = psycopg2.connect('dbname=darkmode')
 
 cursor = connection.cursor()
 
+cursor.execute('DROP TABLE IF EXISTS table1;')
+
 cursor.execute('''
 CREATE TABLE  table1(
     id INTEGER PRIMARY KEY,
@@ -11,7 +13,12 @@ CREATE TABLE  table1(
 );
 ''')
 
-cursor.execute('INSERT INTO table1 (id, completed) VALUES (1, true);')
+cursor.execute('INSERT INTO table1 (id, completed) VALUES (%s, %s);', (1, True))
+
+cursor.execute('INSERT INTO table1 (id, completed) VALUES (%(id)s, %(completed)s);', {
+    'id': 2,
+    'completed': False
+})
 
 connection.commit()
 cursor.close()
